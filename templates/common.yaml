@@ -1,0 +1,31 @@
+esphome:
+  name: ${devicename}
+  platform: ${platform}
+  board: ${board}
+  arduino_version: ${arduino_version}
+
+wifi:
+  ssid: !secret ssid
+  password: !secret ssidPassword
+  power_save_mode: none
+  reboot_timeout: 3min
+
+  manual_ip:
+    static_ip: ${static_ip}
+    gateway: !secret gateway
+    subnet: !secret subnet
+
+logger:
+  level: ${log_level}
+
+ota:
+  safe_mode: True
+  password: !secret otaPassword
+
+mqtt:
+  broker: !secret mqttBroker
+  port: !secret mqttPort
+  username: !secret mqttUsername
+  password: !secret mqttPassword
+  discovery: False
+  

@@ -1,0 +1,19 @@
+# Log Topic: 'i035/debug'
+# Availability: 'i035/status'
+# MQTT Switch 'relay': 
+#   State Topic: 'i035/switch/relay/state'
+#   Command Topic: 'i035/switch/relay/command'
+# MQTT Binary Sensor 'button':
+#   State Topic: 'i035/binary_sensor/button/state'
+
+substitutions:
+  device_number: "35"
+  devicename: "i0${device_number}"
+  static_ip: "192.168.128.${device_number}"
+  log_level: INFO
+  arduino_version: "2.5.2"
+  platform: "ESP8266"
+  board: "esp8285"
+
+<<: !include templates/common.yaml
+<<: !include templates/SonoffBasic01.yaml
