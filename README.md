@@ -30,7 +30,7 @@ List of IP based home automation devices in my home:
 |[i046](i046.yaml)|192.168.128.46|Roller shutter controller 02        |Wemos D1       |ESPHome|
 |[i047](i047.yaml)|192.168.128.47|Roller shutter controller 03        |ESP12e         |ESPHome|
 |[i048](i048.yaml)|192.168.128.48|Roller shutter controller 04        |Wemos D1       |ESPHome|
-|[i049](i049.yaml)192.168.128.49|Roller shutter controller 05        |ESP12e         |ESPHome|
+|[i049](i049.yaml)|192.168.128.49|Roller shutter controller 05        |ESP12e         |ESPHome|
 
 
 
