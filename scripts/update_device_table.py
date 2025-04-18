@@ -33,19 +33,23 @@ def parse_yaml_files():
 # Enrich data with metadata
 def enrich_data(data, metadata):
     enriched = []
-    for item in data:
-        substitutions = item.get('substitutions', {})
-        device_number = substitutions.get('device_number', '')
-
-        enriched_item = {
-            'Name': substitutions.get('device_name', '').replace('${device_number}', device_number),
-            'Device': create_link(substitutions.get('device_type', ''), metadata.get('device_type', [])),
-            'Interface': create_link(substitutions.get('interface', ''), metadata.get('interface', [])),
-            'Board': create_link(substitutions.get('board', ''), metadata.get('board', [])),
-            'Platform': create_link(substitutions.get('platform', ''), metadata.get('platform', []))
-        }
-        logging.debug(f"Enriched data item: {enriched_item}")
-        enriched.append(enriched_item)
+    for filename in os.listdir(BASE_DIR):
+        if re.match(r'i\d{3}_.*\.yaml$', filename):
+            filepath = os.path.join(BASE_DIR, filename)
+            with open(filepath, 'r') as file:
+                content = file.read()
+                content = re.sub(r'<<: !include.*\n', '', content)  # Strip problematic lines
+                yaml_data = yaml.safe_load(content)
+                logging.debug(f"Parsed YAML data from {filename}: {yaml_data}")
+                device_number = yaml_data.get('substitutions', {}).get('device_number', '')
+                enriched_item = {
+                    'Name': f"[i0{device_number}]({filename})",
+                    'Device': create_link(yaml_data.get('substitutions', {}).get('device_type', ''), metadata.get('device_type', [])),
+                    'Interface': create_link(yaml_data.get('substitutions', {}).get('interface', ''), metadata.get('interface', [])),
+                    'Board': create_link(yaml_data.get('substitutions', {}).get('board', ''), metadata.get('board', [])),
+                    'Platform': create_link(yaml_data.get('substitutions', {}).get('platform', ''), metadata.get('platform', []))
+                }
+                enriched.append(enriched_item)
     return enriched
 
 # Create clickable link if URL is present
