@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Navigate to the repository root
+cd "$(git rev-parse --show-toplevel)"
+
+# Run the Python script to update the README.md
+python3 scripts/update_device_table.py
+
+# Add the updated README.md to the commit
+git add README.md
+
+# Commit the changes (if any)
+if ! git diff --cached --quiet; then
+    git commit -m "Automatically update README.md before push"
+fi
