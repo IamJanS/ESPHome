@@ -1,0 +1,16 @@
+---
+substitutions:
+  device_number: "63"
+  device_name: i0${device_number}-bedroom-back-ac
+
+  static_ip: 192.168.128.${device_number}
+  log_level: INFO
+
+  device_type: Mitsubishi SRK 25 ZS
+  interface: MHI-AC-Ctrl
+
+  platform: esp8266
+  board: d1_mini
+  arduino_version: recommended
+
+<<: !include templates/MHI_AC_Ctrl.yaml

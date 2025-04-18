@@ -1,0 +1,53 @@
+# GPIO0	  Button (inverted)
+# GPIO4	  SW Input
+# GPIO12	Relay and Red LED
+# GPIO13	Blue LED (inverted)
+# GPIO16	Optional sensor
+
+button:
+  - platform: restart
+    name: ${device_name} Restart
+    entity_category: diagnostic
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: relay_output
+
+light:
+  - platform: binary
+    name: ${device_name} Light
+    output: relay_output
+    id: light_control
+    restore_mode: RESTORE_DEFAULT_OFF
+
+binary_sensor:
+  - platform: gpio
+    pin: GPIO00
+    id: case_button
+    internal: true
+    filters:
+      - invert:
+      - delayed_off: 10ms
+    on_press:
+      - light.toggle: light_control
+
+  - platform: gpio
+    name: ${device_name} External Switch
+    pin: GPIO04
+    id: external_switch
+    filters:
+      - invert:
+      - delayed_off: 10ms
+    on_press:
+      - light.toggle: light_control
+    on_release:
+      - light.toggle: light_control
+
+  - platform: status
+    name: "${device_name} Status"
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: true

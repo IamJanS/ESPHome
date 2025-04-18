@@ -1,0 +1,51 @@
+# GPIO00   Button (inverted)
+# GPIO19   Blue LED (status, inverted)
+# GPIO26   Relay Output
+# GPIO27   External Switch
+
+button:
+  - platform: restart
+    name: ${device_name} Restart
+    entity_category: diagnostic
+
+output:
+  - platform: gpio
+    pin: GPIO26
+    id: relay_output
+
+fan:
+  - platform: binary
+    name: ${device_name} Fan
+    output: relay_output
+    id: fan_control
+    restore_mode: RESTORE_DEFAULT_OFF
+
+binary_sensor:
+  - platform: gpio
+    pin: GPIO00
+    id: case_button
+    internal: true
+    filters:
+      - invert:
+      - delayed_off: 10ms
+    on_press:
+      - fan.toggle: fan_control
+
+  - platform: gpio
+    name: ${device_name} External Switch
+    pin: GPIO27
+    id: external_switch
+    filters:
+      - invert:
+      - delayed_off: 10ms
+    on_press:
+      - fan.toggle: fan_control
+    on_release:
+      - fan.toggle: fan_control
+  - platform: status
+    name: "${device_name} Status"
+    
+status_led:
+  pin:
+    number: GPIO19
+    inverted: true

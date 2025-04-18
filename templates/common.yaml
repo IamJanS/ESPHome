@@ -1,31 +1,80 @@
 esphome:
-  name: ${devicename}
-  platform: ${platform}
+  name: ${device_name}
+
+${platform}:
   board: ${board}
-  arduino_version: ${arduino_version}
+  framework:
+    version: ${arduino_version}
 
 wifi:
-  ssid: !secret ssid
-  password: !secret ssidPassword
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
   power_save_mode: none
-  reboot_timeout: 3min
+  reboot_timeout: 1min
 
   manual_ip:
     static_ip: ${static_ip}
-    gateway: !secret gateway
-    subnet: !secret subnet
+    gateway: 192.168.128.1
+    subnet: 255.255.255.0
 
 logger:
   level: ${log_level}
 
 ota:
-  safe_mode: True
-  password: !secret otaPassword
+  platform: esphome
+  password: !secret ota_password
 
-mqtt:
-  broker: !secret mqttBroker
-  port: !secret mqttPort
-  username: !secret mqttUsername
-  password: !secret mqttPassword
-  discovery: False
+api:
+
+sensor:
+#  - platform: uptime
+#    name: ${device_name} Uptime
+
+  - platform: uptime
+    name: "${device_name} Uptime (s)"
+    id: uptime_seconds
+    update_interval: 60s
+
+  - platform: wifi_signal
+    name: ${device_name} WiFi Signal
+    update_interval: 60s
+
+text_sensor:
+ #   Already part of device info upper left corner 
+ # - platform: version
+ #   name: ${device_name} ESPHome version
+ #   hide_timestamp: true
+
+  - platform: wifi_info
+    ip_address:
+      name: ${device_name} IP
+      icon: "mdi:ip-outline"
+    ssid:
+      name: ${device_name} SSID
+      icon: "mdi:wifi"
+    bssid:
+      name: ${device_name} BSSID
+      icon: "mdi:wifi"
+    
+  #  Already part of device info upper left corner 
+  #  mac_address:
+  #    name: ${device_name} MAC
+  #    icon: "mdi:network-outline"
+
+  - platform: template
+    name: ${device_name} WiFi Channel
+    lambda: |-
+      return to_string(WiFi.channel());
+    update_interval: 60s
+    entity_category: diagnostic
+    icon: "mdi:wifi"
   
+  - platform: template
+    name: "${device_name} Device Type"
+    lambda: |-
+      return std::string("${device_type}");
+    update_interval: 24h # Must be set to something, otherewise value will not show.
+    entity_category: diagnostic
+    icon: "mdi:information-outline"
+
+      

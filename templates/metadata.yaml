@@ -1,0 +1,25 @@
+metadata:
+  device_type:
+    - name: Smart Doorbell
+      url: https://www.zuidwijk.com/product/smart-doorbell/
+  interface:
+    - name: Sonoff MINI R2
+      url: https://devices.esphome.io/devices/Sonoff-Mini-Relay
+    - name: Sonoff MiniR4 Extreme
+      url: https://devices.esphome.io/devices/Sonoff-MiniR4-Extreme
+    - name: Zuidwijk Smart Doorbell
+      url: https://github.com/zuidwijk/esphome-doorbell/blob/main/smart-doorbell2.yaml
+    - name: MHI-AC-Ctrl
+      url: https://github.com/ginkage/MHI-AC-Ctrl-ESPHome
+  board: 
+    - name: esp8285
+      url: https://docs.platformio.org/en/stable/boards/espressif8266/esp8285.html
+    - name: esp32dev
+      url: https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html
+    - name: d1_mini
+      url: https://www.wemos.cc/en/latest/d1/d1_mini.html
+  platform: 
+    - name: esp8266
+      url: https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html
+    - name: esp32
+      url: https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html

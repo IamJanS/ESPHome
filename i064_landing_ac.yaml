@@ -1,0 +1,16 @@
+---
+substitutions:
+  device_number: "64"
+  device_name: i0${device_number}-landing-ac
+
+  static_ip: 192.168.128.${device_number}
+  log_level: INFO
+
+  device_type: Mitsubishi SRK 50 ZS
+  interface: MHI-AC-Ctrl
+
+  platform: esp8266
+  board: d1_mini
+  arduino_version: recommended
+
+<<: !include templates/MHI_AC_Ctrl.yaml

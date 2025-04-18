@@ -1,37 +1,46 @@
-ESPHome home automation projects
-================================
 
-This repository describes some of my home automation projects, mostly based on the ESPHome platform.
+ESPHome @Home
+=============
 
-
-* [Automated floor heating controller based on a ESP32](automated-floor-heating/README.md)
+### Listing of all ESPHome devices running in my home. 
 
 
-List of IP based home automation devices in my home:
+| Name | Device | Interface | Board | Platform |
+|------|--------|-----------|-------|----------|
+| i031-scullery-light | Lamp | [Sonoff MINI R2](https://devices.esphome.io/devices/Sonoff-Mini-Relay) | [esp8285](https://docs.platformio.org/en/stable/boards/espressif8266/esp8285.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
+| i032-bathroom-light | Lamp | [Sonoff MINI R2](https://devices.esphome.io/devices/Sonoff-Mini-Relay) | [esp8285](https://docs.platformio.org/en/stable/boards/espressif8266/esp8285.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
+| i034-office-light | Lamp | [Sonoff MINI R2](https://devices.esphome.io/devices/Sonoff-Mini-Relay) | [esp8285](https://docs.platformio.org/en/stable/boards/espressif8266/esp8285.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
+| i036-bathroom-fan | Ruck EM 125L EC 01 | [Sonoff MINI R2](https://devices.esphome.io/devices/Sonoff-Mini-Relay) | [esp8285](https://docs.platformio.org/en/stable/boards/espressif8266/esp8285.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
+| i037-living-room-back-fan | Suedwind Ambientika Eco | [Sonoff MiniR4 Extreme](https://devices.esphome.io/devices/Sonoff-MiniR4-Extreme) | [esp32dev](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) | [esp32](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) |
+| i052-toilet-fan | Ruck EM 100L E2 01 | [Sonoff MINI R2](https://devices.esphome.io/devices/Sonoff-Mini-Relay) | [esp8285](https://docs.platformio.org/en/stable/boards/espressif8266/esp8285.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
+| i055-living-room-front-fan | Suedwind Ambientika Eco | [Sonoff MiniR4 Extreme](https://devices.esphome.io/devices/Sonoff-MiniR4-Extreme) | [esp32dev](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) | [esp32](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) |
+| i056-office-fan | Suedwind Ambientika Eco | [Sonoff MiniR4 Extreme](https://devices.esphome.io/devices/Sonoff-MiniR4-Extreme) | [esp32dev](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) | [esp32](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) |
+| i058-kitchen-counter-light | Lamp | [Sonoff MiniR4 Extreme](https://devices.esphome.io/devices/Sonoff-MiniR4-Extreme) | [esp32dev](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) | [esp32](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) |
+| i060-smart-doorbell | [Smart Doorbell](https://www.zuidwijk.com/product/smart-doorbell/) | [Zuidwijk Smart Doorbell](https://github.com/zuidwijk/esphome-doorbell/blob/main/smart-doorbell2.yaml) | [esp32dev](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) | [esp32](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html) |
+| i061-office-ac | Mitsubishi SRK 25 ZS | [MHI-AC-Ctrl](https://github.com/ginkage/MHI-AC-Ctrl-ESPHome) | [d1_mini](https://www.wemos.cc/en/latest/d1/d1_mini.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
+| i062-bedroom-middle-ac | Mitsubishi SRK 25 ZS | [MHI-AC-Ctrl](https://github.com/ginkage/MHI-AC-Ctrl-ESPHome) | [d1_mini](https://www.wemos.cc/en/latest/d1/d1_mini.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
+| i063-bedroom-back-ac | Mitsubishi SRK 25 ZS | [MHI-AC-Ctrl](https://github.com/ginkage/MHI-AC-Ctrl-ESPHome) | [d1_mini](https://www.wemos.cc/en/latest/d1/d1_mini.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
+| i064-landing-ac | Mitsubishi SRK 50 ZS | [MHI-AC-Ctrl](https://github.com/ginkage/MHI-AC-Ctrl-ESPHome) | [d1_mini](https://www.wemos.cc/en/latest/d1/d1_mini.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
+| i065-living-room-ac | Mitsubishi SRK 35 ZSX | [MHI-AC-Ctrl](https://github.com/ginkage/MHI-AC-Ctrl-ESPHome) | [d1_mini](https://www.wemos.cc/en/latest/d1/d1_mini.html) | [esp8266](https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html) |
 
+### How I use ESPHome on my Linux workstation:
 
-| Name | IP | Description | type | Software |
-|------|----|-------------|------|----------|
-|i031|192.168.128.31|-                                                |-          |-      | 		
-|[i032](i032.yaml)|192.168.128.32|Bathroom lighting                   |Sonoff Mini|ESPHome|
-|i033|192.168.128.33|Integra                                          |-				  |-      |
-|i034|192.168.128.34|-                                                |-          |-      |	
-|[i035](i035.yaml)|192.168.128.35|Living room lighting - stand        |Sonoff basic|ESPHome|
-|[i036](i036.yaml)|192.168.128.36|Bathroom fan                        |Sonoff Mini|ESPHome|
-|[i037](i038.yaml)|192.168.128.37|Toilet fan                          |Sonoff Mini|ESPHome|
-|[i038](i038.yaml)|192.168.128.38|Floor heating - pump                |Sonoff TH16|ESPHome|
-|[i039](i039.yaml)|192.168.128.39|Toilet lighting                     |Sonoff Mini|ESPHome|
-|[i040](i040.yaml)|192.168.128.40|Living room lighting - reading light|Sonoff Basic|ESPHome|
-|[i041](i041.yaml)|192.168.128.41|Living room lighting - glass bowl   |Sonoff Basic|ESPHome|
-|[i042](i042.yaml)|192.168.128.42|Pario lighting front                |Sonoff Mini|ESPHome|
-|[i043](i043.yaml)|192.168.128.43|[Floor heating - controller](automated-floor-heating/README.md)|ESP32|ESPHome|
-|[i044](i044.yaml)|192.168.128.44|Patio lighting back                 |Sonoff Mini|ESPHome|
-|[i045](i045.yaml)|192.168.128.45|Roller shutter controller 01        |Wemos D1|ESPHome|
-|[i046](i046.yaml)|192.168.128.46|Roller shutter controller 02        |Wemos D1|ESPHome|
-|[i047](i047.yaml)|192.168.128.47|Roller shutter controller 03        |ESP12e|ESPHome|
-|[i048](i048.yaml)|192.168.128.48|Roller shutter controller 04        |Wemos D1|ESPHome|
-|[i049](i049.yaml)|192.168.128.49|Roller shutter controller 05        |ESP12e|ESPHome|
+Editing with Visual Studio Code.
 
+Build with ESPHome `esphome` docker container:
+```
+docker exec -it esphome esphome run i063_bedroom_back_ac.yaml
+```
 
+Build started by keyboard binding in Visual Studio Code:
 
-
+```
+[
+    {
+        "key": "ctrl+e r",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": { "text": "docker exec -it esphome esphome run ${fileBasename}\u000D" },
+        "when": "editorLangId == yaml && resourceFilename.endsWith('.yaml')"
+      }
+]
+```

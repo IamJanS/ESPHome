@@ -1,0 +1,90 @@
+---
+# Based on version 2:
+# https://github.com/zuidwijk/esphome-doorbell/blob/main/smart-doorbell2.yaml
+substitutions:
+  device_number: "60"
+  device_name: i0${device_number}-smart-doorbell
+
+  static_ip: 192.168.128.${device_number}
+  log_level: INFO
+
+  device_type: Smart Doorbell
+  interface: Zuidwijk Smart Doorbell
+
+  platform: esp32
+  board: esp32dev
+  arduino_version: recommended
+
+<<: !include templates/common.yaml
+
+globals:
+  - id: chime
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+
+switch:
+  - platform: gpio
+    pin:
+      number: GPIO5
+      inverted: false
+    name: "${device_name} Relay"
+    id: relay
+    internal: true
+    icon: mdi:alarm-bell
+  - platform: template
+    name: ${device_name} Chime Active
+    id: chime_active
+    restore_mode: disabled
+    turn_on_action:
+      - globals.set:
+          id: chime
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: chime
+          value: 'false'
+    lambda: |-
+      return id(chime);
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO4
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "${device_name} Doorbell button"
+    filters:
+      # Small filter, to debounce the button press.
+      - delayed_on: 25ms
+      - delayed_off: 25ms
+    on_press:
+      # Only turn on the chime when it is active.
+      then:
+        if:
+          condition:
+            - switch.is_on: chime_active
+          then:
+            - switch.turn_on: relay
+    on_release:
+      # On release, turn of the chime.
+      - switch.turn_off: relay
+
+  - platform: status
+    name: "${device_name} Status"
+
+button:
+  - platform: template
+    name: "${device_name} Ring Doorbell"
+    icon: mdi:bell-ring
+    on_press:
+      - if:
+          condition:
+            switch.is_on: chime_active
+          then:
+            - switch.turn_on: relay
+            - delay: 100ms  # Length of chime activation
+            - switch.turn_off: relay
+  - platform: restart
+    name: ${device_name} Restart
+    entity_category: diagnostic

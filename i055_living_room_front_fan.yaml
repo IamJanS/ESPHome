@@ -1,0 +1,17 @@
+---
+substitutions:
+  device_number: "55"
+  device_name: i0${device_number}-living-room-front-fan
+
+  static_ip: 192.168.128.${device_number}
+  log_level: INFO
+
+  device_type: Suedwind Ambientika Eco
+  interface: Sonoff MiniR4 Extreme
+
+  platform: esp32
+  board: esp32dev
+  arduino_version: recommended
+
+<<: !include templates/common.yaml
+<<: !include templates/Sonoff_MINI_R4_fan.yaml
