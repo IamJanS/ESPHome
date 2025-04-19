@@ -2,6 +2,12 @@ metadata:
   device_type:
     - name: Smart Doorbell
       url: https://www.zuidwijk.com/product/smart-doorbell/
+    - name: Suedwind Ambientika Eco 
+      url: https://www.ambientika.eu/
+    - name: Ruck EM 125L EC 01
+      url: https://www.ruck.eu/ventilatoren/rohrventilatoren
+    - name: Ruck EM 100L E2 01
+      url: https://www.ruck.eu/ventilatoren/rohrventilatoren
   interface:
     - name: Sonoff MINI R2
       url: https://devices.esphome.io/devices/Sonoff-Mini-Relay
