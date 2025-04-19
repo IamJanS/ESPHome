@@ -1,0 +1,55 @@
+# GPIO0	  Case button (inverted)
+# GPIO12	Relay and Red LED
+# GPIO13	Green LED (inverted)
+# GPIO1	  UART TX pin (for external sensors)
+# GPIO3	  UART RX pin (for external sensors)
+# GPIO4	  Optional sensor
+# GPIO14	Optional sensor
+# GPIO2	  Optional Pin EXP-LOG (TH16 Ver 2.1 2019)
+
+button:
+  - platform: restart
+    name: ${device_name} Restart
+    entity_category: diagnostic
+
+switch:
+  - platform: gpio
+    name: ${device_name} Relay
+    pin: GPIO12
+    id: relay
+    restore_mode: RESTORE_DEFAULT_OFF
+
+binary_sensor:
+  - platform: gpio
+    pin: GPIO00
+    id: case_button
+    internal: true
+    filters:
+      - invert:
+      - delayed_off: 10ms
+    on_press:
+      - switch.toggle: relay
+
+sensor:
+  - platform: dht
+    model: AM2302
+    pin: GPIO14
+    humidity:
+      name: ${device_name} humidity
+    temperature:
+      name: ${device_name} temperature
+    update_interval: 180s
+    
+  - platform: uptime
+    name: "${device_name} Uptime (s)"
+    id: uptime_seconds
+    update_interval: 60s
+
+  - platform: wifi_signal
+    name: ${device_name} WiFi Signal
+    update_interval: 60s
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: true
