@@ -11,6 +11,8 @@ metadata:
       url: https://github.com/zuidwijk/esphome-doorbell/blob/main/smart-doorbell2.yaml
     - name: MHI-AC-Ctrl
       url: https://github.com/ginkage/MHI-AC-Ctrl-ESPHome
+    - name: Sonoff TH16
+      url: https://devices.esphome.io/devices/Sonoff-TH10
   board: 
     - name: esp8285
       url: https://docs.platformio.org/en/stable/boards/espressif8266/esp8285.html
