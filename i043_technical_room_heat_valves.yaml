@@ -1,0 +1,77 @@
+
+# https://randomnerdtutorials.com/esp32-pinout-reference-gpios/
+
+# Log Topic: 'i043/debug'
+# Availability: 'i043/status'
+# MQTT Light 'valve21':
+#   State Topic: 'i043/light/valve21/state'
+#   Command Topic: 'i043/light/valve21/command'
+# MQTT Light 'valve22':
+#   State Topic: 'i043/light/valve22/state'
+#   Command Topic: 'i043/light/valve22/command'
+# MQTT Light 'valve23':
+#   State Topic: 'i043/light/valve23/state'
+#   Command Topic: 'i043/light/valve23/command'
+
+
+substitutions:
+  device_number: "43"
+  device_name: i0${device_number}-technical-room-heat-valves
+
+  static_ip: 192.168.128.${device_number}
+  log_level: INFO # DEBUG makes the system unstable.
+
+  device_type: valves
+  interface: DIY floor heating controller
+
+  platform: esp32
+  board: esp32doit-devkit-v1
+  arduino_version: recommended
+
+<<: !include templates/common.yaml
+
+button:
+  - platform: restart
+    name: ${device_name} Restart
+    entity_category: diagnostic
+
+light:
+  - platform: monochromatic
+    id: vlave21
+    name: ${device_name} valve21
+    output: valve21
+    restore_mode: ALWAYS_OFF
+    gamma_correct: 1
+    default_transition_length: 0s
+  - platform: monochromatic
+    id: vlave22
+    name: ${device_name} valve22
+    output: valve22
+    gamma_correct: 1
+    default_transition_length: 0s
+    restore_mode: ALWAYS_OFF
+  - platform: monochromatic
+    id: vlave23
+    name: ${device_name} valve23
+    output: valve23  
+    gamma_correct: 1
+    default_transition_length: 0s
+    restore_mode: ALWAYS_OFF
+
+output:
+  - platform: ledc
+    pin: GPIO21
+    id: valve21
+    frequency: 4000Hz
+  - platform: ledc
+    pin: GPIO22
+    id: valve22
+    frequency: 4000Hz
+  - platform: ledc
+    pin: GPIO23
+    id: valve23
+    frequency: 4000Hz
+
+binary_sensor:
+  - platform: status
+    name: "${device_name} Status"

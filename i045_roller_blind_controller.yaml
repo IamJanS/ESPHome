@@ -1,0 +1,152 @@
+# K2/K5 of i045/i046 are the opposite from i048
+# D1 GPIO5  : K6
+# D2 GPIO4  : K3	
+# D3 GPIO0  : K4
+# D4 GPIO2 :Connected to onboard LED, HIGH at boot, connected to on-board LED, boot fails if pulled LOW
+# D5 GPIO14 : K2
+# D6 GPIO12 : K5
+# D7 GPIO13 : K1
+
+# Rollo 1: kitchen_right
+# Rollo 2: sun_screen
+# Rollo 3: bathroom
+
+substitutions:
+  device_number: "45"
+  device_name: i0${device_number}-roller-blind-controller
+  
+  static_ip: 192.168.128.${device_number}
+  log_level: INFO
+
+  device_type: JAROLIFT tube motor
+  interface: DIY roller blind controller
+
+  platform: esp8266
+  board: d1_mini
+  arduino_version: recommended
+
+  rollo1: kitchen right
+  rollo2: sun screen
+  rollo3: bathroom
+
+<<: !include templates/common.yaml
+
+button:
+  - platform: restart
+    name: ${device_name} Restart
+    entity_category: diagnostic
+
+binary_sensor:
+  - platform: status
+    name: "${device_name} Status"
+
+switch:
+  - platform: gpio
+    pin: GPIO2
+    id: LED
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO0
+    id: K4
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO4
+    id: K3
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO5
+    id: K6
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO12
+    id: K5
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO13
+    id: K1
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO14
+    id: K2
+    restore_mode: ALWAYS_OFF
+
+interval:
+  - interval: 1s
+    then:
+      - switch.toggle: LED
+
+cover:
+  - platform: template
+    name: ${device_name} ${rollo1}
+    open_action:
+      - switch.turn_off: K1
+      - delay: 50ms
+      - switch.turn_off: K2
+      - delay: 50ms
+      - switch.turn_on: K1
+      - delay: 50s
+      - switch.turn_off: K1
+    close_action:
+      - switch.turn_off: K1
+      - delay: 50ms
+      - switch.turn_on: K2
+      - delay: 50ms
+      - switch.turn_on: K1
+      - delay: 50s
+      - switch.turn_off: K1
+      - switch.turn_off: K2
+    stop_action:
+      - switch.turn_off: K1
+      - switch.turn_off: K2
+    optimistic: true
+    assumed_state: true
+      
+  - platform: template
+    name: ${device_name} ${rollo2}
+    open_action:
+      - switch.turn_off: K4
+      - delay: 50ms
+      - switch.turn_off: K3
+      - delay: 50ms
+      - switch.turn_on: K4
+      - delay: 50s
+      - switch.turn_off: K4
+    close_action:
+      - switch.turn_off: K4
+      - delay: 50ms
+      - switch.turn_on: K3
+      - delay: 50ms
+      - switch.turn_on: K4
+      - delay: 50s
+      - switch.turn_off: K4
+      - switch.turn_off: K3
+    stop_action:
+      - switch.turn_off: K4
+      - switch.turn_off: K3
+    optimistic: true
+    assumed_state: true
+ 
+  - platform: template
+    name: ${device_name} ${rollo3}
+    open_action:
+      - switch.turn_off: K6
+      - delay: 50ms
+      - switch.turn_off: K5
+      - delay: 50ms
+      - switch.turn_on: K6
+      - delay: 50s
+      - switch.turn_off: K6
+    close_action:
+      - switch.turn_off: K6
+      - delay: 50ms
+      - switch.turn_on: K5
+      - delay: 50ms
+      - switch.turn_on: K6
+      - delay: 50s
+      - switch.turn_off: K6
+      - switch.turn_off: K5
+    stop_action:
+      - switch.turn_off: K6
+      - switch.turn_off: K5
+    optimistic: true
+    assumed_state: true
