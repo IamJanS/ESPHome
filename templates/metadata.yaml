@@ -29,9 +29,13 @@ metadata:
     - name: esp32dev
       url: https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html
     - name: d1_mini
-      url: https://www.wemos.cc/en/latest/d1/d1_mini.html
+      url: https://docs.platformio.org/en/stable/boards/espressif8266/d1_mini.html
+    - name: esp32doit-devkit-v1
+      url: https://docs.platformio.org/en/stable/boards/espressif32/esp32doit-devkit-v1.html
+    - name: esp12e
+      url: https://docs.platformio.org/en/stable/boards/espressif8266/esp12e.html
   platform: 
     - name: esp8266
-      url: https://docs.platformio.org/en/stable/boards/espressif8266/espmxdevkit.html
+      url: https://www.espressif.com/en/products/socs/esp8266
     - name: esp32
-      url: https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html
+      url: https://www.espressif.com/en/products/socs/esp32
