@@ -19,6 +19,10 @@ metadata:
       url: https://github.com/ginkage/MHI-AC-Ctrl-ESPHome
     - name: Sonoff TH16
       url: https://devices.esphome.io/devices/Sonoff-TH10
+    - name: DIY floor heating controller
+      url: /automated-floor-heating
+    - name: DIY roller blind controller
+      url: /roller-shutter-controller
   board: 
     - name: esp8285
       url: https://docs.platformio.org/en/stable/boards/espressif8266/esp8285.html
