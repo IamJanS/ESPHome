@@ -41,9 +41,8 @@ def enrich_data(data, metadata):
                 content = re.sub(r'<<: !include.*\n', '', content)  # Strip problematic lines
                 yaml_data = yaml.safe_load(content)
                 logging.debug(f"Parsed YAML data from {filename}: {yaml_data}")
-                device_number = yaml_data.get('substitutions', {}).get('device_number', '')
                 enriched_item = {
-                    'Name': f"[i0{device_number}]({filename})",
+                    'Name': f"[{filename[:-5]}]({filename})",  # Remove .yaml extension
                     'Device': create_link(yaml_data.get('substitutions', {}).get('device_type', ''), metadata.get('device_type', [])),
                     'Interface': create_link(yaml_data.get('substitutions', {}).get('interface', ''), metadata.get('interface', [])),
                     'Board': create_link(yaml_data.get('substitutions', {}).get('board', ''), metadata.get('board', [])),
