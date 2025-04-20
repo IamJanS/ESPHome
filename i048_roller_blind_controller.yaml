@@ -1,0 +1,167 @@
+# K2/K5 of i045/i046 are the opposite from i048 (this module)
+# D1 GPIO5  : K6
+# D2 GPIO4  : K3	
+# D3 GPIO0  : K4
+# D4 GPIO2 :Connected to onboard LED, HIGH at boot, connected to on-board LED, boot fails if pulled LOW
+# D5 GPIO14 : K5
+# D6 GPIO12 : K2
+# D7 GPIO13 : K1
+
+# Rollo 1: living_room_right
+# Rollo 2: bedroom_back
+# Rollo 3: not_connected
+
+substitutions:
+  device_number: "48"
+  device_name: i0${device_number}-roller-blind-controller
+
+  static_ip: 192.168.128.${device_number}
+  log_level: INFO
+
+  device_type: JAROLIFT tube motor
+  interface: DIY roller blind controller
+
+  platform: esp8266
+  board: d1_mini
+  arduino_version: recommended
+
+  rollo1: living room right
+  rollo1tt: living room right two third
+  rollo2: bedroom back
+
+<<: !include templates/common.yaml
+
+button:
+  - platform: restart
+    name: ${device_name} Restart
+    entity_category: diagnostic
+
+binary_sensor:
+  - platform: status
+    name: "${device_name} Status"
+
+switch:
+  - platform: gpio
+    pin: GPIO2
+    id: LED
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO0
+    id: K4
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO4
+    id: K3
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO5
+    id: K6
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO12
+    id: K2
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO13
+    id: K1
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    pin: GPIO14
+    id: K5
+    restore_mode: ALWAYS_OFF
+
+interval:
+  - interval: 1s
+    then:
+      - switch.toggle: LED
+
+cover:
+  - platform: template
+    name: ${device_name} ${rollo1} # living room right
+    optimistic: true
+    assumed_state: true
+    open_action:
+      - delay: 250ms
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_off: K2 # direction
+      - delay: 250ms
+      - switch.turn_on: K1 # power
+      - delay: 50s
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_off: K2 # direction
+    close_action:
+      - delay: 250ms
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_on: K2 # direction
+      - delay: 250ms
+      - switch.turn_on: K1 # power
+      - delay: 33s
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_off: K2 # direction
+    stop_action:
+      - delay: 250ms
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_off: K2 # direction
+
+  - platform: template
+    name: ${device_name} ${rollo1tt} # living room right
+    optimistic: true
+    assumed_state: true
+    open_action:
+      - delay: 250ms
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_off: K2 # direction
+      - delay: 250ms
+      - switch.turn_on: K1 # power
+      - delay: 20.8s
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_off: K2 # direction
+    close_action:
+      - delay: 250ms
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_on: K2 # direction
+      - delay: 250ms
+      - switch.turn_on: K1 # power
+      - delay: 12.0s
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_off: K2 # direction
+    stop_action:
+      - delay: 250ms
+      - switch.turn_off: K1 # power
+      - delay: 250ms
+      - switch.turn_off: K2 # direction
+ 
+  - platform: template
+    name: ${device_name} ${rollo2} # bedroom back
+    open_action:
+      - switch.turn_off: K4
+      - delay: 50ms
+      - switch.turn_off: K3
+      - delay: 50ms
+      - switch.turn_on: K4
+      - delay: 50s
+      - switch.turn_off: K4
+    close_action:
+      - switch.turn_off: K4
+      - delay: 50ms
+      - switch.turn_on: K3
+      - delay: 50ms
+      - switch.turn_on: K4
+      - delay: 50s
+      - switch.turn_off: K4
+      - switch.turn_off: K3
+    stop_action:
+      - switch.turn_off: K4
+      - switch.turn_off: K3
+    optimistic: true
+    assumed_state: true
+ 
