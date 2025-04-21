@@ -29,6 +29,9 @@ binary_sensor:
       - delayed_off: 10ms
     on_press:
       - switch.toggle: relay
+      
+  - platform: status
+    name: "${device_name} Status"
 
 sensor:
   - platform: dht

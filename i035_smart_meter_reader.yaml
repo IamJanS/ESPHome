@@ -1,0 +1,154 @@
+---
+# Based on:
+# https://github.com/zuidwijk/dsmr/blob/main/slimmelezer.yaml
+
+substitutions:
+  device_number: "35"
+  device_name: i0${device_number}-smart-meter-reader
+
+  static_ip: 192.168.128.${device_number}
+  log_level: INFO
+
+  device_type: Smart meter reader
+  interface: Zuidwijk Slimmemeter+
+
+  platform: esp8266
+  board: d1_mini
+  arduino_version: recommended
+
+<<: !include templates/common.yaml
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: none
+  reboot_timeout: 1min
+  # Powersaving for brownout due to 250mA restriction P1
+  output_power: 14dB
+  manual_ip:
+    static_ip: ${static_ip}
+    gateway: 192.168.128.1
+    subnet: 255.255.255.0
+
+logger:
+# https://community.home-assistant.io/t/esphome-dsmr-slimmelezer-sends-strange-data/372011/5
+# however I think there is some interference between UART and serial logger. 
+# It is advised to disable the serial logger by setting the baud_rate to zero
+  baud_rate: 0 # Disable logging to serial
+# Solution confirmed!
+
+uart:
+  baud_rate: 115200
+  rx_pin: D7
+  rx_buffer_size: 1700
+
+dsmr:
+  id: dsmr_instance
+  max_telegram_length: 1700
+
+button:
+  - platform: restart
+    name: ${device_name} Restart
+    entity_category: diagnostic
+
+sensor:
+  - platform: uptime
+    name: "${device_name} Uptime (s)"
+    id: uptime_seconds
+    update_interval: 60s
+
+  - platform: wifi_signal
+    name: ${device_name} WiFi Signal
+    update_interval: 60s
+
+  - platform: dsmr
+    energy_delivered_tariff1:
+      name: ${device_name} Energy Consumed Tariff 1
+    energy_delivered_tariff2:
+      name: ${device_name} Energy Consumed Tariff 2
+    energy_returned_tariff1:
+      name: ${device_name} Energy Produced Tariff 1
+    energy_returned_tariff2:
+      name: ${device_name} Energy Produced Tariff 2
+    power_delivered:
+      name: ${device_name} Power Consumed
+      accuracy_decimals: 3
+    power_returned:
+      name: ${device_name} Power Produced
+      accuracy_decimals: 3
+    electricity_failures:
+      name: ${device_name} Electricity Failures
+      icon: mdi:alert
+    electricity_long_failures:
+      name: ${device_name} Long Electricity Failures 
+      icon: mdi:alert
+    voltage_l1:
+      name: ${device_name} Voltage Phase 1
+    voltage_l2:
+      name: ${device_name} Voltage Phase 2
+    voltage_l3:
+      name: ${device_name} Voltage Phase 3
+    current_l1:
+      name: ${device_name} Current Phase 1
+    current_l2:
+      name: ${device_name} Current Phase 2
+    current_l3:
+      name: ${device_name} Current Phase 3
+    power_delivered_l1:
+      name: ${device_name} Power Consumed Phase 1
+      accuracy_decimals: 3
+    power_delivered_l2:
+      name: ${device_name} Power Consumed Phase 2
+      accuracy_decimals: 3
+    power_delivered_l3:
+      name: ${device_name} Power Consumed Phase 3
+      accuracy_decimals: 3
+    power_returned_l1:
+      name: ${device_name} Power Produced Phase 1
+      accuracy_decimals: 3
+    power_returned_l2:
+      name: ${device_name} Power Produced Phase 2
+      accuracy_decimals: 3
+    power_returned_l3:
+      name: ${device_name} Power Produced Phase 3
+      accuracy_decimals: 3
+    gas_delivered:
+      name: ${device_name} Gas Consumed
+
+text_sensor:
+  - platform: dsmr
+    identification:
+      name: ${device_name} DSMR Identification
+    p1_version:
+      name: ${device_name} DSMR Version
+
+  - platform: wifi_info
+    ip_address:
+      name: ${device_name} IP
+      icon: "mdi:ip-outline"
+    ssid:
+      name: ${device_name} SSID
+      icon: "mdi:wifi"
+    bssid:
+      name: ${device_name} BSSID
+      icon: "mdi:wifi"
+    
+  - platform: template
+    name: ${device_name} WiFi Channel
+    lambda: |-
+      return to_string(WiFi.channel());
+    update_interval: 60s
+    entity_category: diagnostic
+    icon: "mdi:wifi"
+  
+  - platform: template
+    name: "${device_name} Device Type"
+    lambda: |-
+      return std::string("${device_type}");
+    update_interval: 24h # Must be set to something, otherewise value will not show.
+    entity_category: diagnostic
+    icon: "mdi:information-outline"
+
+binary_sensor:
+  - platform: status
+    name: "${device_name} Status"
