@@ -25,6 +25,7 @@ def parse_yaml_files():
             with open(filepath, 'r') as file:
                 content = file.read()
                 content = re.sub(r'<<: !include.*\n', '', content)  # Strip problematic lines
+                content = '\n'.join([line for line in content.splitlines() if '!secret' not in line])  # Skip lines with !secret
                 yaml_data = yaml.safe_load(content)
                 logging.debug(f"Parsed YAML data from {filename}: {yaml_data}")
                 data.append(yaml_data)
@@ -39,6 +40,7 @@ def enrich_data(data, metadata):
             with open(filepath, 'r') as file:
                 content = file.read()
                 content = re.sub(r'<<: !include.*\n', '', content)  # Strip problematic lines
+                content = '\n'.join([line for line in content.splitlines() if '!secret' not in line])  # Skip lines with !secret
                 yaml_data = yaml.safe_load(content)
                 logging.debug(f"Parsed YAML data from {filename}: {yaml_data}")
                 enriched_item = {
