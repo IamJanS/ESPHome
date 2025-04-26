@@ -1,0 +1,17 @@
+---
+substitutions:
+  device_number: "57"
+  device_name: i0${device_number}-kitchen-light
+
+  static_ip: 192.168.128.${device_number}
+  log_level: INFO
+
+  device_type: Lamp
+  interface: Sonoff MiniR4 Extreme
+
+  platform: esp32
+  board: esp32dev
+  arduino_version: recommended
+
+<<: !include templates/common.yaml
+<<: !include templates/Sonoff_MINI_R4_light.yaml
